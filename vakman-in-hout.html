@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vakman in Hout — Naslagwerk & Kwalificatiedossier</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #F5F0EB; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const levelColors = {
+  "MBO 2+": "#27AE60",
+  "MBO 3": "#E67E22",
+  "MBO 3+": "#E67E22",
+  "MBO 4": "#E74C3C",
+  "Niveau 4": "#8E44AD",
+  "Niveau 3+4": "#2980B9",
+};
+
+const kwalificatieChapter = {
+  id: 99, code: "KD",
+  title: "Kwalificatiedossier",
+  subtitle: "Ondernemend Meubelmaker / (Scheeps)interieurbouwer — Crebo 25928",
+  color: "#8B5E3C",
+  sections: [
+    { id:"KD.0", title:"Beroepsprofiel", level:"Niveau 3+4",
+      tags:["beroep","ondernemer","maatwerk","interieurbouw","scheepsinterieur"],
+      content:`Een ondernemend meubelmaker/(scheeps)interieurbouwer is een zelfstandig ondernemer of freelancer die gespecialiseerd is in het maken en plaatsen van maatwerkmeubels en -(scheeps)interieurs.
+
+**Wat maak je?**
+Maatwerkmeubels en (scheeps)interieurs van hout en plaatmateriaal. Van ontwerp tot eindproduct, inclusief plaatsing op locatie of aan boord van een schip.
+
+**Hoe werk je?**
+Je overziet het hele productieproces: klantwensen bespreken, offertes opstellen, materialen plannen, produceren en installeren. Zowel zelfstandig als in teamverband.
+
+**Als ondernemer**
+Je werft klanten, onderhoudt zakelijke relaties en beheert projecten van A tot Z. Je houdt ook de financiële administratie bij en promoot je diensten.
+
+**Werkomgeving**
+Je werkt bij kleine tot middelgrote bedrijven in de hout- en meubelbranche, in de productieruimte én op locatie — in gebouwen en aan boord van schepen.
+
+**Definitie meubel (uit het dossier)**
+Een verplaatsbaar gebruiksvoorwerp of object, overwegend van hout, dat ook metaal, kunststof, glas, textiel of natuursteen kan bevatten.`,
+      tip:"Het beroep combineert ambachtelijk vakmanschap, creatief vermogen én ondernemerszin. Je werkt zowel in de werkplaats als bij de klant thuis of op een schip." },
+    { id:"KD.1", title:"Vakkennis & Vaardigheden", level:"Niveau 4",
+      tags:["vakkennis","vaardigheden","machines","materiaalkennis","techniek","ondernemerschap","leidinggeven"],
+      content:`**Machines & Gereedschappen**
+- Conventionele houtbewerkingsmachines bedienen en instellen
+- NC-/CNC-gestuurde machines bedienen, instellen en programmeren
+- Parameters bij CNC-machines kennen en toepassen
+- Snijgereedschappen samenstellen tot bewerkingseenheden
+- Kleine reparaties aan machines uitvoeren
+- Bewerkingstijden en houtverspaningscondities berekenen
+
+**Materiaalkennis**
+- Kennis van massief hout en houtsoorten (krimpen, uitzetten, kwaliteit)
+- Plaatmateriaal: soorten, eigenschappen en bewerkbaarheid
+- Controlemethoden voor kwaliteit van hout en plaatmateriaal
+- Opslagmethoden voor hout en plaatmateriaal
+- Fournituren, hang- en sluitwerk kennen en toepassen
+- Isolatiematerialen en folies bij plaatsing
+
+**Techniek & Productie**
+- Uitslagen van ware vorm en maat maken
+- Mallen en hulpstukken ontwerpen en produceren
+- Technische tekeningen en materiaalstaten lezen én maken
+- NC-/CNC-programma's wijzigen
+- Krachten bij verspaningstechnieken kennen
+
+**Samenstellen & Plaatsen**
+- Complexe meubels monteren met niet-rechte verbindingen
+- Afwerkingsmethoden beheersen (beits, lak, schuren, egaliseren)
+- Grondhout aanbrengen en ondergrond beoordelen
+- Meubels en interieurbouw op locatie plaatsen
+- Aansluitingen op wand, vloer en plafond realiseren
+- Kwaliteitscontroles uitvoeren en afwijkingen herstellen
+
+**Ondernemerschap & Bedrijfsvoering**
+- Offertes opstellen en onderhandelen
+- Personeelsbehoefte berekenen en beleid voeren
+- Inkopen, leveranciers beoordelen en contracten sluiten
+- Financiële administratie bijhouden
+- Kosten-batenanalyses opstellen
+- Wet- en regelgeving voor kleine bedrijven kennen
+
+**Leidinggeven & Samenwerken**
+- Medewerkers instrueren en begeleiden
+- Werkoverleg organiseren en leiden
+- Planning opstellen en taken verdelen op basis van competenties
+- Constructieve feedback geven
+- Nieuwe medewerkers introduceren in bedrijfsprocessen`,
+      tip:"Vakkennis en vaardigheden zijn pas écht bruikbaar als je ze combineert met de juiste beroepshouding: nauwkeurig, veilig, ondernemend en kwaliteitsgericht." },
+    { id:"KD.2", title:"B1-K1 · Hout bewerken met machines", level:"Niveau 3+4",
+      tags:["houtbewerkingsmachine","NC","CNC","snijgereedschap","proefbewerking","machinaal"],
+      content:`**Kerntaak: Bewerken van massief hout/plaatmateriaal met houtbewerkingsmachines**
+Dit is het basisdeel dat voor alle niveaus in het dossier geldt.
+
+**W1 — Bereidt machinale werkzaamheden voor**
+Je ontvangt een werkopdracht, neemt productiegegevens door en maakt een planning. Op niveau 4 controleer je zelfstandig de juistheid van de gegevens en stel je alternatieve productiemethoden vast.
+
+**W2 — Stelt productiegegevens samen**
+Je vertaalt tekeningen en specificaties naar productiegegevens. Op niveau 4 maak je ook uitslagen van ware vormen en wijzig je NC-/CNC-programma's.
+
+**W3 — Selecteert, controleert en transporteert hout en plaatmateriaal**
+Je selecteert materialen op kwaliteit en aantallen, laadt ze in logische volgorde op een intern transportmiddel en vervoert ze naar de werkplek.
+
+**W4 — Brengt snijgereedschappen aan en stelt ze in**
+Je monteert zaagbladen, beitels en boren. Op niveau 4 stel je ook snijgereedschappen in voor bijzondere bewerkingen op NC-/CNC-machines.
+
+**W5 — Stelt houtbewerkingsmachines in**
+Je stelt conventionele machines in voor standaard bewerkingen. Op niveau 4 ook NC-/CNC-machines voor bijzondere bewerkingen; je voert programmagegevens in of wijzigt ze.
+
+**W6 — Voert proefbewerking uit**
+Je controleert instellingen via een proefbewerking, meet het proefstuk en stelt bij. Op niveau 4 voer je ook simulaties uit op NC-/CNC-machines.
+
+**W7 — Voert bewerkingen met houtbewerkingsmachines uit**
+Je schakelt machines in, verwerkt hout en plaatmateriaal, controleert steekproefsgewijs de kwaliteit. Op niveau 4 monitor je het productieproces op beeldscherm en registreer je afwijkingen.
+
+**W8 — Rondt opdracht af**
+Je sorteert restmateriaal, maakt machines en werkplek schoon. Op niveau 4 controleer je ook of machines en gereedschappen nog goed functioneren en noteer je onderhoudsgegevens.`,
+      tip:"Veiligheidsbewustzijn staat centraal: veiligheidsregels worden als vanzelfsprekend in acht genomen bij alle machine-werkzaamheden." },
+    { id:"KD.3", title:"P6-K1 · Samenstellen & afwerken", level:"Niveau 4",
+      tags:["monteren","afwerken","lijmen","fournituren","hang- en sluitwerk","kwaliteitscontrole"],
+      content:`**Kerntaak: Meubels en (scheeps)interieurbouwproducten samenstellen en afwerken**
+Profieldeel — specifiek voor Ondernemend Meubelmaker niveau 4.
+
+**W1 — Bereidt werkopdracht voor**
+Je neemt materiaalstaten, uitslagen en technische tekeningen door. Je controleert de gegevens, stelt de werkvolgorde vast en onderzoekt alternatieve productiemethoden.
+
+**W2 — Selecteert, controleert en transporteert bewerkte producten, gereedschappen en mallen**
+Je selecteert gereedschappen, mallen en bewerkte onderdelen, controleert ze op kwaliteitseisen en transporteert ze naar de werkplek.
+
+**W3 — Monteert meubels en (scheeps)interieurbouwproducten**
+Je legt onderdelen in werkvolgorde klaar, smeert lijmvlakken in, monteert het product en controleert het resultaat.
+
+**W4 — Werkt meubels en (scheeps)interieurbouwproducten af**
+Je egaliseert en repareert meubels, schuurt ze en werkt ze af met beits, lak of een andere afwerklaag.
+
+**W5 — Monteert meubels en (scheeps)interieurbouwproducten af**
+Je monteert hang- en sluitwerk, hangt deuren en kleppen af, monteert laden en fournituren. Je controleert het eindresultaat op kwaliteitseisen.
+
+**W6 — Rondt opdracht af**
+Je maakt machines, randapparatuur en werkplek schoon. Restmateriaal en afval worden gescheiden afgevoerd.`,
+      tip:"Complexiteit neemt toe door rondingen, hoeken, verbindingen, meer houtsoorten of afwijkende vormen — en die factoren kunnen in combinatie voorkomen." },
+    { id:"KD.4", title:"P6-K2 · Meubels plaatsen", level:"Niveau 4",
+      tags:["plaatsen","locatie","grondhout","klant","betimmering","ondergrond","kozijn"],
+      content:`**Kerntaak: Meubels en (scheeps)interieurs plaatsen**
+Je gaat op locatie aan de slag — in gebouwen of aan boord van schepen.
+
+**W1 — Bereidt de werkopdracht voor**
+Je neemt de werkopdracht en productiegegevens door en stelt de werkvolgorde voor het plaatsen vast.
+
+**W2 — Selecteert, controleert en transporteert bewerkte producten en gereedschappen**
+Je laadt bewerkte onderdelen op een (vracht)wagen en transporteert ze naar de locatie.
+
+**W3 — Stelt de situatie op locatie vast**
+Je bespreekt de aanpak met de klant, beoordeelt de staat van de ondergrond en bepaalt welke aanpassingen nodig zijn aan vloeren, wanden of plafonds.
+
+**W4 — Brengt grondhout aan**
+Je egaliseert de ondergrond, meet grondhout op maat en plaatst het. Je brengt zo nodig montageprofielen, isolatiematerialen en folies aan.
+
+**W5 — Plaatst en controleert meubels en (scheeps)interieurbouwproducten**
+Je plaatst betimmering, wanden, kozijnen en kasten. Je zorgt voor goede aansluitingen met wand, vloer en plafond.
+
+**W6 — Rondt opdracht af**
+Je maakt machines en gereedschappen schoon, ruimt de locatie op en voert afval gescheiden af.`,
+      tip:"Je hebt bij het plaatsen een uitvoerende én procesbewakende rol — je werkt zelfstandig maar stuurt ook de werkvolgorde van het team aan." },
+    { id:"KD.5", title:"P6-K3 · Bedrijf leiden", level:"Niveau 4",
+      tags:["ondernemen","offerte","inkopen","personeel","planning","financiën","werkoverleg"],
+      content:`**Kerntaak: Een meubel-, (scheeps)interieurbedrijf/-afdeling leiden**
+Het ondernemersdeel — van offerte tot financiële verantwoording.
+
+**W1 — Verwerft project/opdracht**
+Je informeert (potentiële) klanten over je aanbod, doet aanbiedingen, onderhandelt en bereikt overeenstemming.
+
+**W2 — Bepaalt personeelsbehoefte en -beleid**
+Je schat in hoeveel en welk soort personeel je nodig hebt en berekent de financiële consequenties.
+
+**W3 — Koopt in**
+Je inventariseert benodigde materialen, diensten en partners, vraagt offertes op en sluit contracten af.
+
+**W4 — Overlegt met de werkvoorbereider**
+Je bespreekt de projectinhoud, productiegegevens en voortgang. Na oplevering evalueer je gebruikte uren en materialen.
+
+**W5 — Plant en verdeelt de werkzaamheden**
+Je maakt een planning op basis van beschikbare medewerkers en middelen, en verdeelt taken op basis van competenties.
+
+**W6 — Voert werkoverleg met het team**
+Je organiseert en leidt dagelijks werkoverleg, informeert het team en bespreekt knelpunten.
+
+**W7 — Begeleidt en instrueert medewerkers**
+Je geeft uitleg en instructies, beantwoordt vragen en motiveert het team.
+
+**W8 — Bewaakt het productieproces**
+Je houdt toezicht op logistiek, materiaal en productiemiddelen en voert kwaliteitscontroles uit.
+
+**W9 — Beheert productiemiddelen en productieruimte**
+Je richt de productieruimte optimaal in en stelt een onderhoudsplan op voor machines en gereedschappen.
+
+**W10 — Bewaakt, registreert en verantwoordt de financiële situatie**
+Je documenteert financiële gegevens, stelt periodieke overzichten op en maakt facturen.`,
+      tip:"Als leidinggevende heb je een duidelijke voorbeeldfunctie. Je combineert coördinerende, organiserende én coachende taken." },
+    { id:"KD.6", title:"Beroepshouding", level:"Niveau 3+4",
+      tags:["houding","nauwkeurig","veiligheid","flexibel","stressbestendig","kwaliteit","ondernemend"],
+      content:`**Nauwkeurig & maatvast**
+Precies en maatvast werken is essentieel — het is altijd maatwerk. Concentratie en netheid zijn cruciaal voor een kwalitatief eindresultaat.
+
+**Veiligheidsbewust**
+Veiligheidsregels zijn vanzelfsprekend. Je beschermt jezelf én collega's en houdt je altijd aan arbo- en milieuvoorschriften.
+
+**Flexibel**
+Je gaat flexibel om met veranderende omstandigheden, staat open voor nieuwe werkwijzen en schakelt vlot tussen taken.
+
+**Ondernemend & creatief**
+Je bent creatief, commercieel en neemt initiatieven. Je ziet kansen bij klantcontact en durft weloverwogen risico's te nemen.
+
+**Stressbestendig**
+Onder tijdsdruk blijf je kalm. Je reageert beheerst op onverwachte problemen en vraagt tijdig hulp als dat nodig is.
+
+**Kwaliteitsgericht**
+Je doet het werk in één keer goed. Je controleert je eigen werk tussentijds en accepteert geen resultaten onder de maat.
+
+**Samenwerkend**
+Je kunt zowel zelfstandig werken als in teamverband. Je overlegt tijdig met collega's en leidinggevende.`,
+      tip:"Gevoel voor verfijning en detaillering is zeer belangrijk. Conceptueel en systematisch denken helpt om op basis van een ontwerp alle productiestappen te plannen." },
+    { id:"KD.7", title:"Duurzaamheid", level:"Niveau 3+4",
+      tags:["duurzaamheid","milieu","materialen","energiebesparing","hergebruik","afval"],
+      content:`**Duurzame materialen kiezen**
+Je kiest bij inkoop bewust voor gecertificeerd hout en milieuvriendelijke materialen.
+
+**Restmateriaal & afval scheiden**
+Restmateriaal sorteer je nauwgezet en voer je gescheiden af. Je minimaliseert verspilling bij elke bewerking.
+
+**Energiebewust werken**
+Je schakelt machines uit wanneer ze niet in gebruik zijn en houdt productiemiddelen goed onderhouden.
+
+**Sociale duurzaamheid**
+Ook het welzijn van medewerkers, eerlijk zakendoen en een gezonde bedrijfsvoering horen bij duurzaamheid.
+
+**Duurzaamheid in de praktijk**
+- Bewust omgaan met houtrestanten — sorteren en hergebruiken
+- Energieverbruik van machines monitoren
+- Duurzame inkoop: prijs-kwaliteitverhouding én milieu-impact meewegen
+- Afvalscheiding als vanzelfsprekend onderdeel van het afsluiten van een opdracht`,
+      tip:"Duurzaamheid is geen apart vak — het zit verweven in elke kerntaak: van materiaalinkoop tot het afsluiten van een opdracht met correct afvalscheiding." },
+  ],
+};
+
+const technicalChapters = [
+  { id:1, code:"H01", title:"Hout & Plaatmateriaal", subtitle:"Eigenschappen, verbredingen en kantafwerkingen", color:"#5C4033",
+    sections:[
+      { id:"1.1", title:"Hoe hout beweegt", level:"MBO 2+", tags:["hout","krimpen","uitzetten","materiaal"],
+        content:`Hout is een levend materiaal — ook na het zagen blijft het reageren op vocht. Het neemt vocht op uit de lucht en staat het weer af. Daardoor krimpt en zet het uit. Dit heet het 'werken' van hout.
+
+De richting waarin hout krimpt, is belangrijk. In de richting van de jaarringen (tangentiaal) krimpt hout ongeveer twee keer zoveel als in de richting van de houtstralen (radiaal). Houd hier altijd rekening mee bij het ontwerpen van een meubel.
+
+Jonger hout — aan de buitenkant van de stam — werkt sterker dan ouder hout dichter bij het hart.
+
+→ Zie afbeelding 1: dwarsdoorsnede van een stam met zaagrichtingen en hun vervorming na droging.`,
+        tip:"Ontwerp altijd zo dat hout in de breedte kan bewegen. Vastzetten aan beide kanten geeft spanningen." },
+      { id:"1.2", title:"Houtverbreding — planken lijmen", level:"MBO 2+", tags:["lijmen","houtverbreding","tafelblad"],
+        content:`Als je een brede plank nodig hebt, lijm je smalle planken aan elkaar. Dit heet een houtverbreding.
+
+**Hart- en spintkantkeuze**
+Elk plank heeft een hartkant (donkerder, dichter bij het hart) en een spintkant (lichter, richting schors). Het beste resultaat: spintkant tegen hartkant afwisselen.
+
+**Methode**
+1. Kanten schaven op de vlakbank — licht bol schaven zodat bij het klemmen de einden goed sluiten.
+2. Paringen aanmaken en lijm aanbrengen.
+3. Klemmen loodrecht op de lijmvoeg.
+
+**Verbindingen voor houtverbredingen**
+- Groef en vaste veer
+- Losse veer / losse triplex veer
+- Losse pen op ± 1/3 van de houtdikte
+- Lamello / biscuit verbinding`,
+        tip:"Gebruik bij brede bladen van massief hout altijd constructies die beweging toelaten. Vastgeschroefde bladen barsten." },
+      { id:"1.3", title:"Kantafwerking van plaatmateriaal", level:"MBO 2+", tags:["plaatmateriaal","kantafwerking","fineer","PVC","MDF"],
+        content:`Plaatmateriaal heeft aan de zijkanten een andere structuur dan aan het oppervlak. Die zijkant moet afgewerkt worden.
+
+**Soorten plaatmateriaal**
+- **Triplex/multiplex** – gelijkmatige laagopbouw, alle kanten vergelijkbaar sterk
+- **Spaanplaat** – langshoutkant lijmt goed, kopse kant slecht
+- **MDF** – gelijkmatig, goed te frezen, beide kanten vergelijkbaar
+
+**Kantafwerkingen**
+- Fineerstrook — dunne houtlaag, gelijmd of met smeltlijm
+- Massieve afwerklijst / aanlijmer — steviger, stootvast
+- PVC of kunststof rand — met groef of smeltlijm bevestigd
+- Metalen profielstrip — sier- of functioneel`,
+        tip:"Breng afwerklijsten op spaanplaat aan vóór het fineren, anders tekent de lijst zich door het fineer heen." },
+      { id:"1.4", title:"Hoekverbindingen langshout & plaatmateriaal", level:"MBO 3+", tags:["hoekverbinding","verstek","groef","lamello"],
+        content:`Wanneer twee planken of panelen in een hoek samenkomen, zijn er veel verbindingsmogelijkheden.
+
+**Langshout (massief hout)**
+- Koude lijmverbinding — eenvoudig, maar zwak
+- Sponning in één deel — groter lijmvlak
+- Groef en messing — sterk, schuiven onmogelijk
+- Deuvels
+- Lamello's — snel, licht naschuifbaar
+- Verstek met losse veer — stijlvol, kopse kant verborgen
+
+**Plaatmateriaal**
+- Sponningverbinding met schroeven
+- Groef en veer
+- Tussenschot op volle dikte inkrozing`,
+        tip:"Lamello's zijn ideaal voor plaatmateriaal: snel aan te brengen, geen uitgebreide fresmachine nodig." },
+    ]},
+  { id:2, code:"H02", title:"Diverse Verbindingen", subtitle:"Deuvels, inkrozingen en tandverbindingen", color:"#2C4A3E",
+    sections:[
+      { id:"2.1", title:"Deuvelverbindingen", level:"MBO 2+", tags:["deuvel","verbinding","gaten","boren"],
+        content:`Een deuvelverbinding gebruikt losse ronde houten pennen die in geboorde gaten worden gelijmd.
+
+**Kwaliteit**
+De sterkte hangt af van:
+- Kwaliteit en maatnauwkeurigheid van de deuvels
+- Nauwkeurigheid van het boren (rechte gaten, juiste diepte)
+- Keuze van de lijm
+
+**Afschrijven van de gatplaatsen**
+1. Afgeknepen draadnagels als prikkers
+2. Metalen hulpstukjes — in één kant boren, dan aandrukken
+3. Boormal — voor snelle, nauwkeurige herhaling`,
+        tip:"Controleer bij smallere houtdoorsneden goed waar de deuvel valt — te dicht bij de rand verzwakt het hout." },
+      { id:"2.2", title:"Inkrozingen", level:"MBO 2+", tags:["inkrozing","T-verbinding","schuifzwaluwstaart"],
+        content:`Een inkrozing is een verbinding waarbij de volle dikte van het ene deel in het andere wordt ingelaten.
+
+**Uitvoering**
+De sleuf mag niet te diep zijn: gebruik 1/3 tot 2/5 van de houtdikte. Te diep frezen verzwakt het verticale deel.
+
+**Schuifzwaluwstaart**
+Om uitschuiven in de lengterichting tegen te gaan, maak je een halve of hele schuifzwaluwstaartverbinding.`,
+        tip:"Een doorlopende sleuf voor een schuifzwaluwstaart zaag je langs een schuine klos die als geleider dient." },
+      { id:"2.3", title:"Tandverbindingen", level:"MBO 3+", tags:["tandverbinding","hoekverbinding","kistje","freesmachine"],
+        content:`Een tandverbinding verbindt twee delen op de hoek, waarbij ingehakte tanden en pennen in elkaar grijpen. Door de vele lijmvlakjes is dit een zeer sterke verbinding.
+
+**Gebruik**
+Typisch voor hoeken van kistjes, dozen en kleine opbergmeubelen.
+
+**Werkvolgorde**
+1. Delen gelijktijdig op lengte maken
+2. Dikte afkruisen
+3. Verdeling maken op één deel, afkruisen op alle delen
+4. Inzagen (halve lijndikte)
+5. Borsten inhakken
+6. Binnenkanten opzuiveren en schuren
+7. Lijmen`,
+        tip:"Bij een freesmachine kun je alle tanden in één werkgang frezen als de houtbreedte deelbaar is door een even aantal." },
+    ]},
+  { id:3, code:"H03", title:"Zwaluwstaartverbindingen", subtitle:"Open, halfverdekt, verdekt en schuin", color:"#3A3060",
+    sections:[
+      { id:"3.1", title:"Wat is een zwaluwstaart?", level:"MBO 3+", tags:["zwaluwstaart","trekkracht","hoekverbinding"],
+        content:`Een zwaluwstaartverbinding is een hoekverbinding waarbij de tanden schuin zijn uitgevoerd — ze zijn breder aan het einde dan aan de voet. Daardoor biedt de verbinding weerstand aan trekkrachten in één richting.
+
+De verbinding is sterker dan een gewone tandverbinding bij gebruik zonder lijm. Mét lijm is ze uiterst solide.
+
+**Open zwaluwstaart**
+Beide zijden van de verbinding zijn zichtbaar. Vereist nauwkeurig en ambachtelijk werk.`,
+        tip:"Een zwaluwstaartverbinding is mooier als de verdeling en schuinte kloppen. Te flauw geeft speling; te steil breekt af." },
+      { id:"3.2", title:"Verdeling en schuinte bepalen", level:"MBO 3+", tags:["verdeling","schuinte","afschrijven"],
+        content:`**Verdeling**
+Staarten en kepen nemen gelijke ruimte in op de borstlijn, aan de buitenkanten een halve keep.
+
+**Schuinte**
+De schuinte van de staarten ligt tussen 10° en 15°:
+- Hardere houtsoorten: minder schuin (dichter bij 10°)
+- Zachtere houtsoorten: steiler (dichter bij 15°)
+
+Te flauw: kans op speling in de verbinding.
+Te steil: punten van de staarten breken gemakkelijk af.`,
+        tip:"Maak voor een serie werkstukken altijd een zinken afschrijfmal — dan is de schuinte altijd gelijk en werk je sneller." },
+      { id:"3.3", title:"Halfverdekte zwaluwstaart", level:"MBO 4", tags:["halfverdekt","lade","voorkant","kopshout"],
+        content:`Als aan één kant geen kopshout zichtbaar mag zijn, gebruik je een halfverdekte zwaluwstaartverbinding. Typisch toegepast bij de verbinding van een ladevoorstuk met de ladezijde.
+
+De verdekking bedraagt ± 1/3 van de houtdikte. De staarten zijn 2/3 van de houtdikte lang.`,
+        tip:"Halfverdekte zwaluwstaarten vereisen extra nauwkeurigheid bij het inhakken van de kepen in het dikke deel." },
+    ]},
+  { id:5, code:"H05", title:"De Lade", subtitle:"Opbouw, materialen, verbindingen en loopconstructies", color:"#4A3000",
+    sections:[
+      { id:"5.1", title:"Onderdelen en materialen van een lade", level:"MBO 2+", tags:["lade","voorstuk","lazijde","bodem","loper"],
+        content:`Een lade bestaat uit: het voorstuk, twee lazijden, het achterstuk en de bodem.
+
+**Materialen**
+- **Voorstuk** — van dezelfde houtsoort als het meubel; dikte 18–22 mm
+- **Lazijden en achterstuk** — slijtvaste houtsoort, bij voorkeur beuken; dikte 8–15 mm
+- **Bodem** — triplex of hardboard; draadrichting altijd evenwijdig aan het voorstuk
+
+**Schuifonderdelen**
+- **Loper** — de lat waarover de lade schuift
+- **Wiplat** — voorkomt dat de lade bij het uitschuiven dompt
+- **Slingerlatje** — voorkomt zijdelings uitwijken`,
+        tip:"De achterkant van de lade wordt iets lager gehouden (± 5 mm) zodat lucht achter de lade weg kan." },
+      { id:"5.2", title:"Het maken van een lade — stap voor stap", level:"MBO 3", tags:["zwaluwstaart","bodemgroef","werkstap","lijmen"],
+        content:`De sterkste verbindingen voor een lade zijn zwaluwstaartverbindingen: halfverdekt aan de voorkant en open aan de achterkant.
+
+**Bodemgroef**
+De bodemgroef mag nooit dieper zijn dan een halve dikte van de lazijde min 1 mm.
+
+**Werkvolgorde**
+1. Binnenkanten lade-onderdelen zuiver schaven
+2. Afkruisen
+3. Op één lazijde de voorste én achterste zwaluwstaarten afschrijven
+4. Beide lazijden inklemmen, staarten inzagen
+5. Lazijden losnemen en uithakken
+6. Staarten afkruisen op voor- en achterstuk, dan uithakken
+7. Binnenkanten schuren, lade lijmen
+8. Bodem passchaven, inschuiven, bevestigen
+9. Lade inpassen en opzuiveren`,
+        tip:"Lazijden niet schuren — een geschaafde zijde schuift beter. Na het afwerken paraffine aanbrengen voor soepeler schuiven." },
+    ]},
+  { id:6, code:"H06", title:"Draaideuren & Kleppen", subtitle:"Scharnieren, speunen en scharen", color:"#1A4A2E",
+    sections:[
+      { id:"6.1", title:"Soorten scharnieren", level:"MBO 2+", tags:["scharnier","paumelle","inboorscharnier"],
+        content:`Scharnieren maken delen van meubelen draaibaar. Gangbare typen:
+- **Knopscharnier** — klassiek, met sierknopen
+- **Pianoscharnier** — over de volledige hoogte
+- **Paumelle** — voor demontabele kasten
+- **Inboorscharnier** — onzichtbaar, verstelbaar met stelschroeven
+- **Cilinderscharnier** — onzichtbaar, in pasboringen gelijmd
+- **Klepscharnier** — ronde vorm voor kleppen
+- **Glazen deurscharnier** — voor glazen of perspex deuren`,
+        tip:"Inboorscharnieren zijn de standaard bij moderne demontabele kasten. Ze zijn verstelbaar in drie richtingen na montage." },
+      { id:"6.2", title:"Scharnieren monteren", level:"MBO 3", tags:["monteren","afhangen","inpassen","deur"],
+        content:`**Afhangen**
+Afhangen omvat: de deur op maat schaven, inpassen en scharnieren monteren.
+
+Volgorde:
+1. Draaikant schaven (zuiver recht)
+2. Deur op breedte maken
+3. Deur tegen bovenregel passen
+4. Op hoogte maken en tegen onderregel passen
+
+**Inlaten van traditionele scharnieren**
+De bladen moeten zuiver in de kepen passen — vlak met het aansluitend hout.`,
+        tip:"Bij tussendraaïende deuren: schaaf de sluikant iets arm — de knoop van het scharnier bepaalt het draaipunt." },
+    ]},
+  { id:9, code:"H09", title:"Tafels", subtitle:"Maten, pootverbindingen en bladbevestiging", color:"#1E8449",
+    sections:[
+      { id:"9.1", title:"Hoogtematen en bladmaten", level:"MBO 2+", tags:["tafel","hoogte","bladmaat","beenruimte"],
+        content:`**Hoogtematen**
+- Werktafel (staand): ± 900 mm
+- Eetkamer- of werktafel (zittend): ± 750 mm
+- TV-tafel: ± 400–450 mm
+- Salon- en bijzettafels: ± 500 mm
+
+De vrije beenruimte moet minimaal 600 mm zijn.
+
+**Bladmaten per aantal personen**
+- 4 personen: 1200 mm
+- 6 personen: 1700 mm
+- 7 personen: 1850 mm`,
+        tip:"De hoogte van een TV-tafel wordt bepaald door de ooghoogte tijdens het kijken — dit verschilt sterk per zitmeubilair." },
+      { id:"9.2", title:"Poot/regelverbindingen", level:"MBO 3+", tags:["poot","regel","pen-en-gat","spatpen","hoekblok"],
+        content:`Tafelrompen worden samengesteld uit vier poten, twee lange en twee korte regels.
+
+**Pen-en-gat met spatpen**
+De beste verbinding voor vierkante poten. De spatpennen voorkomen het ongelijk werken van de regels.
+
+**Menagering**
+- Aan de bovenkant: 1/4 à 1/5 van de regelbreedte
+- Aan de onderkant: 3 à 5 mm
+
+**Hoekklossen**
+Versterking van de verbinding met gelijmde en geschroefde hoekklossen.`,
+        tip:"Schroef hoekklossen schuin — minder kans op verschuiven en meer trekkracht." },
+    ]},
+  { id:10, code:"H10", title:"Slaapmeubelen", subtitle:"Ledikantmaten, bijzondere bedconstructies en verbindingen", color:"#2C3E50",
+    sections:[
+      { id:"10.1", title:"Typen ledikanten en standaardmaten", level:"MBO 2+", tags:["ledikant","bed","kinderledikant","eenpersoons","tweepersoons","lits-jumeaux","maten"],
+        content:`Ledikanten worden in vier groepen onderverdeeld:
+
+**a. Kinderledikanten**
+- Lengte: 1100 of 1200 mm
+- Breedte: 550 of 600 mm
+
+**b. Eenpersoonsledikanten**
+- Lengte: 1900, 2000 of 2100 mm
+- Breedte: 700, 800, 900 of 1000 mm
+
+**c. Tweepersoonsledikanten**
+- Lengte: 1900, 2000 of 2100 mm
+- Breedte: 1200, 1300, 1400, 1500, 1600 of 1800 mm
+
+**d. Lits-jumeaux**
+- Lengte: 1900, 2000 of 2100 mm
+- Breedte: 2 × 800, 2 × 900 of 2 × 1000 mm
+
+**Speling voor de matras**
+De matrassen hebben zowel in de breedte als in de hoogte een speling nodig van 20 mm. Bij een matras van 1880 × 880 mm moet de inwendige maat dus 1900 × 900 mm worden.`,
+        tip:"Ledikanten worden altijd demontabel gemaakt — denk aan transport via smalle trappen en opslag. Plan de verbindingen daarop in." },
+      { id:"10.2", title:"Bijzondere bedconstructies", level:"MBO 3", tags:["etagebad","onderschuifbed","verstelbaar bed","opklapbed","kantelbed"],
+        content:`**Etagebad**
+Twee eenpersoonsbedden boven elkaar. Leverbaar als één geheel of als twee losse ledikanten.
+
+**Onderschuifbed**
+Na gebruik schuift het onderste bed onder het bovenste — ruimtebesparend.
+
+**Verstelbaar bed**
+Zowel hoofd- als voeteneinde zijn verstelbaar, voor slapen én ontspannen. Bediening met de hand, hydraulisch of elektrisch.
+
+**Opklapbed**
+In de lengte opklapbaar, verborgen in een ombouw met gordijn of paneel. Meestal uitgerust met een hydraulische rem en veren.
+
+**Kantelbed**
+Wordt stevig op de vloer bevestigd en weggekanteld achter een gordijn.`,
+        tip:"Bij opklapbedden: de hydraulische rem en de veren zijn essentieel voor veilig gebruik — controleer bij montage of de rem goed is afgesteld." },
+      { id:"10.3", title:"Ledikantverbindingen", level:"MBO 3", tags:["ledikantverbinding","beslag","haakconstructie","U-profiel","lenskopschroef","demontabel"],
+        content:`Ledikanten worden altijd demontabel uitgevoerd. Op de zijden wordt een lat gelijmd en geschroefd, waarop de bedbodem of spiraalmatras rust.
+
+**Voor kinderledikanten**
+Twee lenskopschroeven in sleutelgatplaatjes — eenvoudig en voldoende voor lichtere constructies.
+
+**Voor normale ledikanten (zwaarder beslag)**
+- **Ledikantschroef** — klassiek; bout in gleuf, afgedekt met triplexplaatje
+- **Haakconstructie met ingelaten platen** — erg sterk maar tijdrovend
+- **U-vormige profielen** — eenvoudiger; direct geschroefd
+- **Lip-en-omzetplaten** — twee in elkaar grijpende platen
+- **Kleminrichting met cilinderschroef** — snel verwisselbaar
+- **Busconstructie met haken** — voor gebogen hoofd/voeteneinden
+- **Metalen plaat met U-ijzer** — voor lits-jumeaux
+
+**Bedbodemplank bevestigen**
+- Smalle planken dragend op de latten
+- Planken met zwaluwstaarten in inlaten — voorkomt uitwijken
+- Hoekijzers tegen de kopse kanten`,
+        tip:"De haakconstructie met ingelaten platen is de sterkste verbinding, maar vergt veel werk. U-profielen zijn een goed alternatief: bijna even sterk en veel sneller." },
+    ]},
+  { id:11, code:"H11", title:"Lijm- en buigtechniek", subtitle:"Lijmsoorten, lijmverbindingen, persdruk en gebogen vormen", color:"#4A1A2E",
+    sections:[
+      { id:"11.1", title:"Soorten lijm", level:"MBO 2+", tags:["lijm","PVAc","witte lijm","kunstharslijm","contactlijm","smeltlijm"],
+        content:`In de meubelindustrie worden twee hoofdgroepen lijm gebruikt:
+
+**1. Thermohardende kunstharslijmen (twee-componenten)**
+- Ureum formaldehyde (UF)
+- Melamine formaldehyde (MF)
+- Fenol formaldehyde (FF)
+- Resorcinol formaldehyde (RF)
+
+Klasse-indeling voor gebruik binnenshuis:
+- Klasse 1: vochtig binnenklimaat
+- Klasse 2: overwegend droog binnenklimaat
+- Klasse 3: droog binnenklimaat
+
+**2. Thermoplastische eencomponentenlijmen (gebruiksklaar)**
+- **PVAc** — 'witte lijm', meest gebruikt in de werkplaats
+- **Contactlijm** — voor HPL, fineer op grote vlakken
+- **Smeltlijm** — voor kantafwerking op machines (180–200°C)`,
+        tip:"De temperatuur van lijm, hout én werkruimte mag niet onder 15°C dalen — dan dringt de lijm onvoldoende in het hout." },
+      { id:"11.2", title:"Hoe lijm werkt — adhesie en passing", level:"MBO 3", tags:["adhesie","cohesie","lijmvoeg","passing","afbinden"],
+        content:`**Adhesie en cohesie**
+Adhesie is de kleefkracht van de lijm aan het materiaal. Cohesie is de samenhang van de lijmdeeltjes onderling.
+
+**Sterkte per lijmrichting**
+- Langs- tegen langshout: zeer sterk
+- Kops- tegen langshout: matig
+- Kops- tegen kopshout: zeer zwak — lijm zinkt weg
+
+**Passing**
+De lijmvlakken moeten nauwkeurig op elkaar aansluiten. Bij een te dikke lijmvoeg binden de buitenkanten al af voordat het binnenste is uitgehard.
+
+**Belangrijk**
+Een afgebonden lijmvoeg breekt niet op het lijmvlak — aan weerszijden worden houtspaanders meegebroken. Lijm is dus sterker dan hout.`,
+        tip:"Lijm nooit kops- tegen kopshout — de lijm zinkt direct weg in de open poriën en er blijft niet genoeg lijm over voor een goede verbinding." },
+      { id:"11.3", title:"Persdruk en haaksheid controleren", level:"MBO 3", tags:["persdruk","klemmen","haaksheid","diagonalen"],
+        content:`**Persdruk aanbrengen**
+Op grote, vlakke werkstukken: druk steeds vanuit het midden naar de buitenkanten, zodat overtollige lijm kan wegvloeien. Kracht loodrecht op de lijmvlakken laten werken.
+
+**Haaksheid controleren**
+Diagonalen meten bij raamwerken en dozen — bij een haaks vierkant zijn de diagonalen even lang. Correctie: klempunten verplaatsen in de richting van de langste diagonaal.
+
+**Deuvelverbindingen**
+Geribde deuvels zijn handiger: lucht en overtollige lijm ontsnappen tijdens het klemmen. Laat 3 mm ruimte tussen gatbodem en deuvel.`,
+        tip:"Controleer altijd de haaksheid door de diagonalen te meten vóórdat de lijm uithardt. Daarna is bijstellen niet meer mogelijk." },
+      { id:"11.4", title:"Gebogen vormen — uitzagen, lamineren en buigen", level:"MBO 4", tags:["gebogen vormen","uitzagen","lamineren","buigen","stomen","mal","kuipen"],
+        content:`Gebogen meubelonderdelen komen voor bij kapregels, stoelruggen, armleggers en tafelranden. Er zijn drie methoden:
+
+**1. Uitzagen**
+Eenvoudigst — met de lintzaag. Nadeel: aan de uiteinden loopt de houtdraad schuin over het hout (overdraads). Alleen geschikt voor flauw gebogen vormen.
+
+**2. Lamineren / lamelleren**
+Dunne laagjes hout worden langs over langs op een mal gelijmd. Na uitharding behouden ze de gebogen vorm. Thermohardende lijm geeft minder terugvering dan thermoplastische.
+
+**3. Buigen (stomen)**
+Hout stomen op 100–105°C. De houtcellen worden plastisch, zodat de vezels kunnen verschuiven. Direct daarna in de buigmachine vormen en nadrogen in een mal. Geschikte houtsoorten: beuken, essen, iepen, noten, japanse eiken.
+
+**Kuipen**
+Schenkels (in de gebogen vorm uitgezaagde stukken) worden als een halfsteensmuur naast elkaar gelijmd tot bijv. een tafelring.`,
+        tip:"Bij lamineren: hoe dunner de laagjes, hoe strakker de bocht en hoe minder terugvering. Gebruik thermohardende lijm." },
+    ]},
+  { id:12, code:"H12", title:"Kasten", subtitle:"Slaapkamerkasten en historische constructies", color:"#4A235A",
+    sections:[
+      { id:"12.1", title:"Indelingen van slaapkamerkasten", level:"MBO 2+", tags:["slaapkamerkast","hangkast","legkast","indeling"],
+        content:`Slaapkamerkasten nemen een eigen plaats in door hun grote afmetingen en specifieke functie.
+
+**Diepte: hang- vs legkast**
+Een hangkast hoeft niet zo diep te zijn als een legkast. Bij combinatie wordt het leggedeelte vaak 15 cm ondieper gemaakt.
+
+**Indelingstypen**
+- Eéndeurs legkast — verstelbare legplanken
+- Eéndeurs hangkast — tussenschot voor bruikbaar hanggedeelte
+- Tweedeurs hangkast heren — jassen, kostuums, legplanken en laden
+- Tweedeurs hangkast dames — avondkleding, mantels, legplanken
+- Driedeurs hangkast — combinatie heren- en dameskleding`,
+        tip:"Een legkast hoeft niet even diep als een hangkast — maak legplanken 15 cm ondieper en benut die ruimte aan de binnenzijde van de deur." },
+      { id:"12.2", title:"Driedeurs slaapkamerkast — constructie", level:"MBO 3", tags:["driedeurskast","demontabel","inboorscharnier","speun"],
+        content:`Afmetingen: 2000 mm breed × 2000 mm hoog × 600 mm diep.
+
+**Gebogen deuren — drie methoden**
+- Deur met zaagsneden, in de juiste vorm gelijmd met mal en contramal
+- Deur van triplex, teruggeplaatst, draait op speunen
+- Aangelijnde massieve houten lijst
+
+**Verbindingen in de kast**
+- Zijwanden, kap en bodem: excenter- of inboorverbindingen
+- Tussenschotten: inkrozing of excenter
+- Achterwand: in groef geschoven of geniet
+- Deuren: inboorscharnieren of speunen`,
+        tip:"Controleer bij montage altijd eerst de diagonalen vóór je de achterwand bevestigt — een scheve achterwand trekt de hele kast krom." },
+    ]},
+  { id:13, code:"H13", title:"Betimmeringen", subtitle:"Functies, soorten, grondhout en bevestigen", color:"#2E4053",
+    sections:[
+      { id:"13.1", title:"Functies en soorten betimmeringen", level:"MBO 2+", tags:["betimmering","schrootjes","raamwerk","paneel","lambrisering"],
+        content:`Betimmeringen kunnen verschillende functies hebben:
+- Het wegnemen van een koude en zakelijke sfeer
+- Het creëren van een representatieve omgeving
+- Het verbeteren van de akoestiek
+- Het verbeteren van geluid- en/of warmte-isolatie
+
+**Vier soorten**
+- **Staafjes** — smalle stroken hout, tot maximaal 120 mm breed
+- **Schrootjes** — brede handelsschrootjes met afwijkende profielen
+- **Plaatmateriaal** — met fineer, metaalplaat, hardplastic of textiel
+- **Raamwerken met paneelvulling** — de oudste vorm, eeuwenlang gebruikt`,
+        tip:"Bij panelen in sponningen: voeg van 1,5 mm per meter wandbreedte aanhouden in verband met het uitzetten van het materiaal." },
+      { id:"13.2", title:"Stellen en bevestigen", level:"MBO 3", tags:["stellen","grondhout","pluggen","schroeven","waterpas"],
+        content:`**Grondhout stellen**
+Het grondhout (latten of regels) wordt waterpas en in het vlak op de wand bevestigd.
+
+Volgorde:
+1. Horizontale regels stellen op de nulijn
+2. Verticale stijlen stellen in het vlak
+3. Extra regels op de aansluitplaatsen van panelen
+
+**Bevestigen aan de wand**
+- Metselwerk / beton: pluggen en schroeven
+- Gipsblokken: speciale gipspluggen
+- Houtskelet: direct in de staanders schroeven
+
+**Betimmering op het grondhout**
+- Zichtbaar: schroeven met verzonken kop, gedekt met stopjes
+- Onzichtbaar (blind nagelen): nagel door de tand van het profiel`,
+        tip:"Blind nagelen (door de tand) geeft een schone afwerking zonder zichtbare bevestigingsmiddelen." },
+    ]},
+];
+
+const chapters = [...technicalChapters, kwalificatieChapter];
+
+function App() {
+  const [activeChapter, setActiveChapter] = useState(kwalificatieChapter);
+  const [activeSection, setActiveSection] = useState(kwalificatieChapter.sections[0]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const allSections = chapters.flatMap(ch =>
+    ch.sections.map(s => ({ ...s, chapterTitle: ch.title, chapterId: ch.id }))
+  );
+
+  const filteredSections = searchQuery.length > 1
+    ? allSections.filter(s =>
+        s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        s.content.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
+  const selectSection = (s, ch) => {
+    setActiveChapter(ch);
+    setActiveSection(s);
+    setSearchQuery("");
+  };
+
+  const renderContent = (text) => {
+    return text.split("\n").map((line, i) => {
+      if (line.startsWith("**") && line.endsWith("**") && !line.slice(2,-2).includes("**"))
+        return <h4 key={i} style={{color:activeChapter.color,margin:"16px 0 6px",fontSize:"15px",fontWeight:700}}>{line.replace(/\*\*/g,"")}</h4>;
+      if (line.includes("**")) {
+        const parts = line.split(/\*\*(.*?)\*\*/g);
+        return <p key={i} style={{margin:"6px 0",lineHeight:1.7}}>{parts.map((p,j)=>j%2===1?<strong key={j}>{p}</strong>:p)}</p>;
+      }
+      if (line.startsWith("→"))
+        return <p key={i} style={{margin:"12px 0",color:"#666",fontStyle:"italic",borderLeft:`3px solid ${activeChapter.color}`,paddingLeft:"12px"}}>{line}</p>;
+      if (line.startsWith("- "))
+        return <li key={i} style={{margin:"4px 0 4px 20px",lineHeight:1.6}}>{line.slice(2)}</li>;
+      if (/^\d+\. /.test(line))
+        return <li key={i} style={{margin:"4px 0 4px 20px",lineHeight:1.6,listStyleType:"decimal"}}>{line.replace(/^\d+\. /,"")}</li>;
+      if (line==="") return <br key={i}/>;
+      return <p key={i} style={{margin:"6px 0",lineHeight:1.7}}>{line}</p>;
+    });
+  };
+
+  const isKD = activeChapter.id === 99;
+  const secIdx = activeChapter.sections.indexOf(activeSection);
+
+  return (
+    <div style={{fontFamily:"'Inter',sans-serif",background:"#F5F0EB",minHeight:"100vh",display:"flex",flexDirection:"column"}}>
+
+      {/* Header */}
+      <header style={{background:"#1A1A1A",color:"white",padding:"0 24px",display:"flex",alignItems:"center",gap:"16px",height:"60px",boxShadow:"0 2px 8px rgba(0,0,0,0.3)",flexShrink:0}}>
+        <button onClick={()=>setSidebarOpen(!sidebarOpen)} style={{background:"none",border:"none",color:"white",cursor:"pointer",fontSize:"20px",padding:"4px 8px"}}>☰</button>
+        <div>
+          <span style={{fontSize:"17px",fontWeight:700}}>Vakman in Hout</span>
+          <span style={{marginLeft:"12px",fontSize:"11px",color:"#999",fontFamily:"monospace"}}>Naslagwerk & Kwalificatiedossier · MBO 2/3/4</span>
+        </div>
+        <div style={{marginLeft:"auto",position:"relative"}}>
+          <input value={searchQuery} onChange={e=>setSearchQuery(e.target.value)}
+            placeholder="Zoek verbinding, techniek, kerntaak..."
+            style={{background:"#333",border:"1px solid #555",borderRadius:"6px",color:"white",padding:"8px 14px",width:"260px",fontSize:"13px",outline:"none",fontFamily:"inherit"}}/>
+          {filteredSections.length > 0 && (
+            <div style={{position:"absolute",top:"100%",right:0,background:"white",border:"1px solid #ddd",borderRadius:"6px",boxShadow:"0 4px 16px rgba(0,0,0,0.15)",zIndex:1000,width:"360px",maxHeight:"320px",overflowY:"auto"}}>
+              {filteredSections.map(s => (
+                <div key={`${s.chapterId}-${s.id}`}
+                  onClick={()=>selectSection(s, chapters.find(c=>c.id===s.chapterId))}
+                  style={{padding:"10px 14px",cursor:"pointer",borderBottom:"1px solid #F0F0F0"}}
+                  onMouseEnter={e=>e.currentTarget.style.background="#F5F0EB"}
+                  onMouseLeave={e=>e.currentTarget.style.background="white"}>
+                  <div style={{fontSize:"13px",fontWeight:600,color:"#1A1A1A"}}>{s.title}</div>
+                  <div style={{fontSize:"11px",color:"#888",marginTop:"2px"}}>{s.chapterTitle} · {s.id}</div>
+                  <div style={{marginTop:"4px",display:"flex",gap:"4px",flexWrap:"wrap"}}>
+                    {s.tags.slice(0,4).map(t=><span key={t} style={{background:"#F0F0F0",borderRadius:"3px",padding:"1px 6px",fontSize:"10px",color:"#666"}}>{t}</span>)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Chapter tabs */}
+      <div style={{background:"#2A2A2A",display:"flex",overflowX:"auto",flexShrink:0}}>
+        <button onClick={()=>{setActiveChapter(kwalificatieChapter);setActiveSection(kwalificatieChapter.sections[0]);}}
+          style={{background:isKD?kwalificatieChapter.color:"transparent",color:isKD?"white":"#C8956C",border:"none",padding:"10px 18px",cursor:"pointer",fontFamily:"inherit",fontSize:"12px",fontWeight:isKD?700:500,whiteSpace:"nowrap",borderBottom:isKD?`3px solid ${kwalificatieChapter.color}`:"3px solid rgba(200,149,108,0.3)"}}>
+          <span style={{opacity:0.7,marginRight:"6px",fontSize:"10px"}}>KD</span>Kwalificatiedossier
+        </button>
+        <div style={{width:"1px",background:"#444",margin:"8px 4px",flexShrink:0}}/>
+        {technicalChapters.map(ch=>(
+          <button key={ch.id} onClick={()=>{setActiveChapter(ch);setActiveSection(ch.sections[0]);}}
+            style={{background:activeChapter.id===ch.id?ch.color:"transparent",color:activeChapter.id===ch.id?"white":"#AAA",border:"none",padding:"10px 18px",cursor:"pointer",fontFamily:"inherit",fontSize:"12px",fontWeight:activeChapter.id===ch.id?700:400,whiteSpace:"nowrap",borderBottom:activeChapter.id===ch.id?`3px solid ${ch.color}`:"3px solid transparent"}}>
+            <span style={{opacity:0.7,marginRight:"6px",fontSize:"10px"}}>{ch.code}</span>{ch.title}
+          </button>
+        ))}
+      </div>
+
+      {/* Main */}
+      <div style={{display:"flex",flex:1,overflow:"hidden"}}>
+
+        {/* Sidebar */}
+        {sidebarOpen && (
+          <aside style={{width:"260px",background:"white",borderRight:"1px solid #E0D8D0",overflowY:"auto",flexShrink:0,padding:"16px 0"}}>
+            {isKD && (
+              <div style={{margin:"0 12px 16px",background:`${kwalificatieChapter.color}15`,border:`1px solid ${kwalificatieChapter.color}30`,borderRadius:"6px",padding:"10px 12px"}}>
+                <div style={{fontSize:"10px",fontFamily:"monospace",color:kwalificatieChapter.color,fontWeight:700,marginBottom:"4px"}}>CREBO 25928 · NIVEAU 4</div>
+                <div style={{fontSize:"12px",color:"#555",lineHeight:1.5}}>Ondernemend Meubelmaker / (Scheeps)interieurbouwer</div>
+              </div>
+            )}
+            <div style={{padding:"0 16px 6px",fontSize:"11px",fontWeight:700,color:"#888",letterSpacing:"1px",textTransform:"uppercase",fontFamily:"monospace"}}>{activeChapter.title}</div>
+            <div style={{padding:"0 16px 12px",fontSize:"12px",color:"#AAA"}}>{activeChapter.subtitle}</div>
+            {activeChapter.sections.map(section=>(
+              <div key={section.id} onClick={()=>setActiveSection(section)}
+                style={{padding:"10px 16px",cursor:"pointer",background:activeSection.id===section.id?`${activeChapter.color}15`:"transparent",borderLeft:activeSection.id===section.id?`3px solid ${activeChapter.color}`:"3px solid transparent"}}
+                onMouseEnter={e=>{if(activeSection.id!==section.id)e.currentTarget.style.background="#F5F0EB";}}
+                onMouseLeave={e=>{if(activeSection.id!==section.id)e.currentTarget.style.background="transparent";}}>
+                <div style={{fontSize:"13px",fontWeight:activeSection.id===section.id?600:400,color:activeSection.id===section.id?activeChapter.color:"#333"}}>{section.title}</div>
+                <div style={{display:"flex",gap:"6px",marginTop:"4px"}}>
+                  <span style={{fontSize:"10px",background:(levelColors[section.level]||"#888")+"20",color:levelColors[section.level]||"#888",padding:"1px 6px",borderRadius:"3px",fontFamily:"monospace"}}>{section.level}</span>
+                  <span style={{fontSize:"10px",color:"#CCC"}}>{section.id}</span>
+                </div>
+              </div>
+            ))}
+          </aside>
+        )}
+
+        {/* Content */}
+        <main style={{flex:1,overflowY:"auto",padding:"32px 48px",maxWidth:"800px"}}>
+          <div style={{marginBottom:"24px",paddingBottom:"20px",borderBottom:`2px solid ${activeChapter.color}30`}}>
+            <div style={{display:"flex",alignItems:"center",gap:"12px",marginBottom:"8px"}}>
+              <span style={{background:activeChapter.color,color:"white",padding:"3px 10px",borderRadius:"4px",fontSize:"12px",fontFamily:"monospace",fontWeight:700}}>{activeSection.id}</span>
+              <span style={{fontSize:"11px",background:(levelColors[activeSection.level]||"#888")+"20",color:levelColors[activeSection.level]||"#888",padding:"3px 8px",borderRadius:"4px",fontFamily:"monospace"}}>{activeSection.level}</span>
+              {isKD && <span style={{fontSize:"11px",background:"#8B5E3C22",color:"#8B5E3C",padding:"3px 8px",borderRadius:"4px",fontFamily:"monospace"}}>Kwalificatiedossier</span>}
+            </div>
+            <h1 style={{fontSize:"26px",color:"#1A1A1A",margin:"0 0 10px",fontWeight:700}}>{activeSection.title}</h1>
+            <div style={{display:"flex",flexWrap:"wrap",gap:"6px"}}>
+              {activeSection.tags.map(tag=>(
+                <span key={tag} style={{background:"#F0EBE5",color:"#666",padding:"3px 8px",borderRadius:"4px",fontSize:"11px"}}>{tag}</span>
+              ))}
+            </div>
+          </div>
+
+          <div style={{fontSize:"15px",color:"#2A2A2A",lineHeight:1.75}}>
+            {renderContent(activeSection.content)}
+          </div>
+
+          {activeSection.tip && (
+            <div style={{marginTop:"28px",background:`${activeChapter.color}10`,border:`1px solid ${activeChapter.color}30`,borderLeft:`4px solid ${activeChapter.color}`,borderRadius:"6px",padding:"14px 18px"}}>
+              <div style={{fontSize:"11px",fontWeight:700,color:activeChapter.color,marginBottom:"4px",letterSpacing:"1px",textTransform:"uppercase",fontFamily:"monospace"}}>✦ Praktijktip</div>
+              <div style={{fontSize:"14px",color:"#333",lineHeight:1.65}}>{activeSection.tip}</div>
+            </div>
+          )}
+
+          <div style={{marginTop:"40px",paddingTop:"20px",borderTop:"1px solid #E0D8D0",display:"flex",justifyContent:"space-between",gap:"12px"}}>
+            {secIdx > 0 && (
+              <button onClick={()=>setActiveSection(activeChapter.sections[secIdx-1])}
+                style={{background:"none",border:`1px solid ${activeChapter.color}`,color:activeChapter.color,padding:"8px 16px",borderRadius:"6px",cursor:"pointer",fontFamily:"inherit",fontSize:"13px"}}>
+                ← {activeChapter.sections[secIdx-1].title}
+              </button>
+            )}
+            {secIdx < activeChapter.sections.length-1 && (
+              <button onClick={()=>setActiveSection(activeChapter.sections[secIdx+1])}
+                style={{background:activeChapter.color,border:"none",color:"white",padding:"8px 16px",borderRadius:"6px",cursor:"pointer",fontFamily:"inherit",fontSize:"13px",marginLeft:"auto"}}>
+                {activeChapter.sections[secIdx+1].title} →
+              </button>
+            )}
+          </div>
+
+          {isKD && (
+            <div style={{marginTop:"32px",padding:"12px 16px",background:"#F0EBE5",borderRadius:"6px",fontSize:"11px",color:"#888",fontFamily:"monospace",lineHeight:1.8}}>
+              Kwalificatiedossier Meubels en (scheeps)interieurs maken · Crebo 23373<br/>
+              Profiel P6 Ondernemend meubelmaker/(scheeps)interieurbouwer · Crebo 25928<br/>
+              Geldig vanaf 01-08-2024 · Sectorkamer Techniek en Gebouwde Omgeving
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
